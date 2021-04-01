@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QuizCracker</title>
+	 <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <style>
+    #eye_btn, #eye_btn:hover{
+      color: #333;
+      text-decoration: none;
+    }
+    .vertical-center {
+      min-height: 100%;
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+    }
+    .jumbotron.vertical-center {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="jumbotron vertical-center">
+    <div class="container">
+      <div class="d-flex justify-content-center align-items-center">
+        <div class="col-md-5">
+          <img src="{% static 'assets/images/logo_full.png' %}" class="img-fluid" alt="QuizCracker">
+          <div class="border rounded p-3 mt-2 bg-dark text-white">
+            <p class="h3">Login</p>
+              <form method="post">
+                  {% csrf_token %}
+                  <div class="form-group" id="jgd">
+                      <label for="un">Username</label>
+                      <input type="text" name="username" id="un" placeholder="Enter Username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label>Password</label>
+                      <div class="input-group" id="password_eye">
+                        <input class="form-control" type="password" name="password" placeholder="Enter Password">
+                        <div class="input-group-append">
+                          <a href="" role="button" class="input-group-text" id="eye_btn"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+{#                      <a href="#" class="text-light">Forgot Password?</a>#}
+                    </div>
+                    <div class="form-group mt-2">
+                      <button class="btn btn-success btn-sm mt-1"><i class="fa fa-sign-in"></i> Login</button>
+                      <a role="button" href="{% url 'register' %}" class="btn btn-primary btn-sm mt-1"><i class="fas fa-user-plus"></i> Register</a>
+                    </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function() {
+    $("#password_eye a").on('click', function(event) {
+        event.preventDefault();
+        if($('#password_eye input').attr("type") == "text"){
+            $('#password_eye input').attr('type', 'password');
+            $('#password_eye i').addClass( "fa-eye-slash" );
+            $('#password_eye i').removeClass( "fa-eye" );
+        }else if($('#password_eye input').attr("type") == "password"){
+            $('#password_eye input').attr('type', 'text');
+            $('#password_eye i').removeClass( "fa-eye-slash" );
+            $('#password_eye i').addClass( "fa-eye" );
+        }
+    });
+});
+  </script>
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            {% if message.tags == 'error' %}
+                Swal.fire('Oops...','{{ message|safe }}','error');
+            {% endif %}
+            {% if message.tags == 'warning' %}
+                Swal.fire('Warning','{{ message|safe }}','warning');
+            {% endif %}
+            {% if message.tags == 'info' %}
+                Swal.fire('Information','{{ message|safe }}','info');
+            {% endif %}
+            {% if message.tags == 'success' %}
+                Swal.fire('Success','{{ message|safe }}','success');
+            {% endif %}
+        </script>
+    {% endfor %}
+{% endif %}
+</body>
+</html>
